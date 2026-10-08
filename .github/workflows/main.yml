@@ -18,7 +18,7 @@ jobs:
       - name: Unpack project
         run: |
           mkdir project
-          unzip -q ZaiTalk_v78_BuildFix.zip -d project
+          ZaiTalk_v79_BuildFix.zip
           PROJECT_DIR=$(find project -name settings.gradle -type f -print -quit | xargs dirname)
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
           echo "Found project at: $PROJECT_DIR"
