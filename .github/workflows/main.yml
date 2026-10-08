@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ZaiTalk-debug-apk
-path: ZaiTalk_v76_BuildFix/app/build/outputs/apk/debug/*.apk    
+          path: ZaiTalk_v76_BuildFix/app/build/outputs/apk/debug/*.apk    
