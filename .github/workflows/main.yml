@@ -18,7 +18,7 @@ jobs:
       - name: Unpack project
         run: |
           mkdir project
-          unzip -q ZaiTalk_v76_BuildFix.zip -d project
+          unzip -q ZaiTalk_v77_Fixed.zip -d project
           PROJECT_DIR=$(find project -name settings.gradle -type f -print -quit | xargs dirname)
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
           echo "Found project at: $PROJECT_DIR"
@@ -43,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ZaiTalk-debug-apk
-          path: "**/app/build/outputs/apk/debug/*.apk"
+          path: "project/**/app/build/outputs/apk/debug/*.apk"
