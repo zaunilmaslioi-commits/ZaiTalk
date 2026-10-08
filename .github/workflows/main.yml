@@ -15,32 +15,50 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Unpack project
-        run: |
-          mkdir project
-          unzip -q "./ZaiTalk_v82_ToastFix_FIXED.zip" -d project
-          PROJECT_DIR=$(find project -name settings.gradle -type f -print -quit | xargs dirname)
-          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
-          echo "Found project at: $PROJECT_DIR"
-
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.10.2"
+          gradle-version: '8.10.2'
+
+      - name: Unpack ZaiTalk v84
+        shell: bash
+        run: |
+          set -e
+
+          mkdir -p project
+
+          unzip -q "./ZaiTalk_v84_CompileFix.zip" -d project
+
+          PROJECT_DIR="$(find project -name settings.gradle -type f -print -quit | xargs dirname)"
+
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "ERROR: settings.gradle not found"
+            exit 1
+          fi
+
+          echo "PROJECT_DIR=$PROJECT_DIR"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
 
       - name: Build APK
+        shell: bash
         run: |
+          set -e
           cd "$PROJECT_DIR"
-          gradle assembleDebug --stacktrace
+
+          gradle --version
+
+          gradle :app:assembleDebug --stacktrace --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ZaiTalk-debug-apk
-          path: "project/**/app/build/outputs/apk/debug/*.apk"
+          path: |
+            ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
