@@ -30,11 +30,11 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Build APK
-        working-directory: ZaiTalk_v76_BuildFix
+        working-directory: ZaiTalk_v76_MobileStart
         run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ZaiTalk-debug-apk
-          path: ZaiTalk_v76_BuildFix/app/build/outputs/apk/debug/*.apk
+          path: ZaiTalk_v76_MobileStart/app/build/outputs/apk/debug/*.apk
