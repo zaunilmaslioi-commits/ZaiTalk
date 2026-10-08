@@ -16,7 +16,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack project
-        run: unzip -q ZaiTalk_v76_BuildFix.zip -d .
+        run: |
+          mkdir project
+          unzip -q ZaiTalk_v76_BuildFix.zip -d project
+          PROJECT_DIR=$(find project -name settings.gradle -type f -print -quit | xargs dirname)
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Found project at: $PROJECT_DIR"
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -30,11 +35,12 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Build APK
-        working-directory: ZaiTalk_v76_MobileStart
-        run: gradle assembleDebug --stacktrace
+        run: |
+          cd "$PROJECT_DIR"
+          gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: ZaiTalk-debug-apk
-          path: ZaiTalk_v76_MobileStart/app/build/outputs/apk/debug/*.apk
+          path: "**/app/build/outputs/apk/debug/*.apk"
