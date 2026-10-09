@@ -33,7 +33,7 @@ jobs:
 
           mkdir -p project
 
-          unzip -q "./ZaiTalk_v85_CompileFix.zip" -d project
+          unzip -q "./ZaiTalk_v84_CompileFix.zip" -d project
 
           PROJECT_DIR="$(find project -name settings.gradle -type f -print -quit | xargs dirname)"
 
